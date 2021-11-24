@@ -32,7 +32,7 @@ def initGame():
     global gamePad, clock, background, fighter, missile, explosion
 
 
-    missile = pygame.image.load('missile.png') # Sae 미사일그림
+    missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
 
 
 
