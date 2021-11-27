@@ -12,7 +12,7 @@ rockImage = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'h
 
 
 
-explsionSound = []
+explsionSound = ['eating1.wav','eating2.mp3','eating3.mp3']
 
 
 # Sae 운석을 맞춘 개수 계산
@@ -72,10 +72,10 @@ def initGame():
     pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
-    pygame.mixer.music.load('music.wav')  # Chan 음악 재생
+    pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
-    missileSound = pygame.mixer.Sound('missile.wav')
-    gameOverSound = pygame.mixer.Sound('gameover.wav')
+    missileSound = pygame.mixer.Sound('throwing.mp3')
+    gameOverSound = pygame.mixer.Sound('gameover.mp3')
 
 
 
@@ -213,6 +213,7 @@ def runGame():
             rockSize = rock.get_rect().size
             rockWidth = rockSize[0]
             rockHeight = rockSize[1]
+            destroySound = pygame.mixer.Sound(random.choice(explsionSound))
             rockX = random.randrange(0, padWidth - rockWidth)
             rockY = 0
 
