@@ -120,9 +120,8 @@ def runGame():
 
             # Han 전투기가 운석과 충돌했는지 체크
             if y < rockY + rockHeight:
-                if(rockX > x and rockX < x + fighterWidth) or ＼
-                (rockX + rockWidth > x and rockX + rockWidth < x + fighterWidth)
-                crash()
+                if(rockX > x and rockX < x + fighterWidth) or (rockX + rockWidth >x and rockX + rockWidth< x + fighterWidth):
+                    crash()
 
             drawObject(figther, x, y) #비행기를 게임 화면의 (x, y) 좌표에 그림
 
