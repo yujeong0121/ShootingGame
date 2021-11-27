@@ -5,7 +5,10 @@ from time import sleep
 BLACK = (0,0,0)
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
+rockImage = [
 
+]
+explsionSound = []
 
 # Sae 운석을 맞춘 개수 계산
 def writeScore(count):
@@ -31,7 +34,10 @@ def writeMessage(text):
     textpos.center = (padWidth/2, padHeight/2)
     gamePad.blit(text, textpos)
     pygame.display.update()
+    pygame.mixer.music.stop()
+    gameOverSound.play()
     sleep(2)
+    pygame.mixer.music.play(-1)
     runGame()
 
 # Han 전투기가 운석과 충돌했을 때 메세지 출력
@@ -58,6 +64,10 @@ def initGame():
     pygame.init()
     gamePad = pygame.display.set_mode((padWidth, padHeight))
     pygame.display.set_caption('PyShooting')
+    pygame.mixer.music.load('music.wav')  # Chan 음악 재생
+    pygame.mixer.music.play(-1)
+    missileSound = pygame.mixer.Sound('missile.wav')
+    gameOverSound = pygame.mixer.Sound('gameover.wav')
 
 
     background = pygame.image.load('pig.png')
@@ -90,13 +100,23 @@ def runGame():
             # 전투기 움직이기
             if event.type in [pygame.KEYDOWN]:
                 if event.key == pygame.K_LEFT: #전투기 왼쪽으로 이동
+                    fighterX -= 5
 
                 elif event.key == pygame.K_RIGHT: #전투기 오른쪽으로 이동
+                    fighterX += 5
 
                 elif event.key == pygame.K_SPACE:  # Sae 미사일발사
+                    missileSound.play()
                     missileX = x + fighterWidth/2
                     missileY = y - fighterHeight
                     missileXY.append([missileX, missileY])
+
+            if event.type in [pygame.KEYUP]:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    fighterX = 0
+
+
+        drawObject(background, 0, 0)  # 배경화면 그리기
 
             # Han 전투기가 운석과 충돌했는지 체크
             if y < rockY + rockHeight:
@@ -114,6 +134,7 @@ def runGame():
            if isShot:
                 #운석 폭발
                 drawObject(explosion, rockX, rockY)
+                destroySound.play()
 
                 #새로운 운석(랜덤)
                 rock= pygame.image.load(random.choice(rockImage))
@@ -122,6 +143,7 @@ def runGame():
                 rockHeight = rockSize[1]
                 rockX = random.randrange(0, padWidth - rockWidth)
                 rockY = 0
+                destroySound = pygame.mixer.Sound(random.choice(explsionSound))
                 isShot = False
 
                 # Han 운석 맞추면 속도 증가
