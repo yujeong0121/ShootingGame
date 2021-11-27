@@ -34,7 +34,6 @@ def writeMessage(text):
     sleep(2)
     runGame()
 
-<<<<<<< HEAD
 # Han 전투기가 운석과 충돌했을 때 메세지 출력
 def crash():
     global gamePad
@@ -53,8 +52,7 @@ def drawObject(obj, x, y):
     gamePad.blit(obj, (x, y))
 
 
-=======
->>>>>>> 462c0ec9086d0619fc27f4d46dd8419e64307c3d
+
 def initGame():
     global gamePad, clock, background, fighter, missile, explosion
     pygame.init()
