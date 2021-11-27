@@ -1,13 +1,10 @@
-
 import pygame
 import sys
 from time import sleep
 
-
-
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
-
+background = pygame.image.load('pig.png')
 
 
 # Sae 운석을 맞춘 개수 계산
@@ -30,8 +27,10 @@ def writePassed(count):
 
 def initGame():
     global gamePad, clock, background, fighter, missile, explosion
-
+    pygame.init()
+    gamePad = pygame.display.set_mode((padWidth, padHeight))
     pygame.display.set_caption('PyShooting')
+
     missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
 
 
