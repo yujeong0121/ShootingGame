@@ -1,13 +1,10 @@
-
 import pygame
 import sys
 from time import sleep
 
-
-
+BLACK = (0,0,0)
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
-
 
 
 # Sae 운석을 맞춘 개수 계산
@@ -37,6 +34,7 @@ def writeMessage(text):
     sleep(2)
     runGame()
 
+<<<<<<< HEAD
 # Han 전투기가 운석과 충돌했을 때 메세지 출력
 def crash():
     global gamePad
@@ -55,14 +53,22 @@ def drawObject(obj, x, y):
     gamePad.blit(obj, (x, y))
 
 
+=======
+>>>>>>> 462c0ec9086d0619fc27f4d46dd8419e64307c3d
 def initGame():
     global gamePad, clock, background, fighter, missile, explosion
+    pygame.init()
+    gamePad = pygame.display.set_mode((padWidth, padHeight))
+    pygame.display.set_caption('PyShooting')
 
+
+    background = pygame.image.load('pig.png')
     pygame.init()   #Han
     gamePad = pygame.display.set.mode((padWidth, padHeight)) #Han
     background = pygame.image.load('pig.png')  #Han
     clock = pygame.time.Clock()  #Han
     pygame.display.set_caption('PyShooting')
+
     missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
 
 
