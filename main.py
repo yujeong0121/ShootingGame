@@ -2,6 +2,7 @@ import pygame
 import sys
 from time import sleep
 
+BLACK = (0,0,0)
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
 
