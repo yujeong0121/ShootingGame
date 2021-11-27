@@ -31,7 +31,7 @@ def writePassed(count):
 def initGame():
     global gamePad, clock, background, fighter, missile, explosion
 
-
+    pygame.display.set_caption('PyShooting')
     missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
 
 
