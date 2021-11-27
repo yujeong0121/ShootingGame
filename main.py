@@ -29,7 +29,14 @@ def initGame():
     gamePad = pygame.display.set_mode((padWidth, padHeight))
     pygame.display.set_caption('PyShooting')
 
+
     background = pygame.image.load('pig.png')
+    pygame.init()   #Han
+    gamePad = pygame #Han
+
+
+    pygame.display.set_caption('PyShooting')
+
     missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
 
 
@@ -52,6 +59,8 @@ def runGame():
             if event.type in  [pygame.QUIT]: #게임 프로그램 종료
                 pygame.quit()
                 sys.exit()
+        drawObject(background, 0, 0) #배경화면 그리기 -Han
+        pygame.display.update() #게임화면을 다시 그림 -Han
 
             # 전투기 움직이기
             if event.type in [pygame.KEYDOWN]:
