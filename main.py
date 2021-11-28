@@ -70,6 +70,9 @@ def initGame():
     gamePad = pygame.display.set_mode((padWidth, padHeight))
 
     pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
+    fighter = pygame.image.load('fighter.png') # 전투기 그림 - ho
+    explosion = pygame.image.load('explosion.png') # 폭발 그림 - ho
+
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
@@ -96,6 +99,18 @@ def initGame():
 def runGame():
     global gamepad, clock, background, fighter, missile, explosion, missileSound
 
+    # 전투기 크기
+    fighterSize =  fighter.get_rect().size
+    fighterWidth = fighterSize[0]
+    fighterHeight = fighterSize[1]
+
+    # 전투기 초기 위치 (x,y)
+
+    x = padWidth * 0.45
+    y = padHeight * 0.9
+    fighterX = 0
+
+
     # Sae 무기좌표 리스트
     missileXY = []
 
@@ -110,6 +125,12 @@ def runGame():
     rockX = random.randrange(0, padWidth - rockWidth)
     rockY = 0
     rockSpeed = 2
+
+    # 전투기 미사일에 운석이 맞았을 경우 True
+
+    isShot = False
+    shotCount = 0
+    rockPassed = 0
 
 
     onGame = False
@@ -127,6 +148,8 @@ def runGame():
 
         drawObject(background, 0, 0) #배경화면 그리기
         pygame.display.update() #Han 게임화면을 다시 그림
+
+        drawObject(fighter, x, y)
 
 
             # 전투기 움직이기
@@ -194,6 +217,12 @@ def runGame():
                 bxy[1] -= 10  # Sae 총알의 y좌표 -10 (위로 이동)
                 missileXY[i][1] = bxy[1]
 
+                if bxy[1] < rockY:
+                    if bxy[0] > rockX and bxy[0] < rockX + rockWidth:
+                        missileXY.remove(bxy)
+                        isShot = True
+                        shotCount += 1
+
                 if bxy[1] <= 0:  #Sae 미사일이 화면 밖을 벗어나면
                     try:
                         missileXY.remove(bxy)  #Sae 미사일 제거
@@ -216,6 +245,20 @@ def runGame():
             destroySound = pygame.mixer.Sound(random.choice(explsionSound))
             rockX = random.randrange(0, padWidth - rockWidth)
             rockY = 0
+
+        # 운석을 맞춘 경우
+        if isShot:
+            # 운석 폭발
+            drawObject(explosion, rockX, rockY) # 운석 폭발 그리기
+
+            # 새로운 운석(랜덤)
+            rock = pygame.image.load(random.choice(rockImage))
+            rockSize = rock.get_rect().size
+            rockWidth = rockSize[0]
+            rockHeight = rockSize[1]
+            rockX = random.randrange(0, padWidth - rockWidth)
+            rockY = 0
+            isShot = False
 
         drawObject(rock, rockX, rockY) # 운석 그리기
 
