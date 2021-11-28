@@ -18,7 +18,12 @@ explsionSound = ['eating1.wav','eating2.mp3','eating3.mp3']
 # Sae 운석을 맞춘 개수 계산
 def writeScore(count):
     global gamePad
-    font = pygame.font.Font("폰트 경로인가?", 20)
+    #font = pygame.font.Font("폰트 경로인가?", 20)
+
+    # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
+    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
+    index = ableFonts.index("휴먼아미체")
+    font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
     text = font.render('파괴한 운석 수:' + str(count), True, (255, 255, 255))
     gamePad.blit(text, (10, 0))
 
@@ -26,15 +31,26 @@ def writeScore(count):
 # Sae 운석이 화면 아래로 통과한 개수
 def writePassed(count):
     global gamePad
-    font = pygame.font.Font("폰트", 20)
+    #font = pygame.font.Font("폰트", 20)
+
+    # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
+    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
+    index = ableFonts.index("휴먼아미체")
+    font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
     text = font.render('놓친 운석:' + str(count), True, (255, 0, 0))
     gamePad.blit(text, (360, 0))
+
 
 # Han 게임 메세지 출력
 def writeMessage(text):
     global gamePad
-    textfont = pygame.font.Font('폰트', 80)
-    text = textfont.render(text, True, (55,0,0))
+    #textfont = pygame.font.Font('폰트', 80)
+    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
+    index = ableFonts.index("휴먼아미체")
+    font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
+    text = font.render(text, True, (255,0,0))
+
+
     textpos = text.get_rect()
     textpos.center = (padWidth/2, padHeight/2)
     gamePad.blit(text, textpos)
@@ -66,13 +82,15 @@ def drawObject(obj, x, y):
 
 def initGame():
     global gamePad, clock, background, fighter, missile, explosion, missileSound, gameOverSound
-    pygame.init()
-    gamePad = pygame.display.set_mode((padWidth, padHeight))
+    pygame.init()  # Han
+    gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
     pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
-    fighter = pygame.image.load('fighter.png') # 전투기 그림 - ho
-    explosion = pygame.image.load('explosion.png') # 폭발 그림 - ho
-
+    fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
+    fighter2 = pygame.image.load('player2.png') # 마른캐릭
+    missile = pygame.image.load('spoon-and-fork.png')  # Sae 미사일그림
+    explosion = pygame.image.load('mouth.png') # 폭발 그림 - ho
+    background = pygame.image.load('pig.png')  # Han
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
@@ -82,17 +100,9 @@ def initGame():
 
 
 
-    pygame.init()   #Han
-
-    gamePad = pygame #Han
-
-    gamePad = pygame.display.set.mode((padWidth, padHeight)) #Han
-    background = pygame.image.load('pig.png')  #Han
-    clock = pygame.time.Clock()  #Han
-    pygame.display.set_caption('PyShooting')
 
 
-    missile = pygame.image.load('spoon-and-fork.png') # Sae 미사일그림
+
 
 
 
@@ -100,12 +110,11 @@ def runGame():
     global gamepad, clock, background, fighter, missile, explosion, missileSound
 
     # 전투기 크기
-    fighterSize =  fighter.get_rect().size
+    fighterSize = fighter.get_rect().size
     fighterWidth = fighterSize[0]
     fighterHeight = fighterSize[1]
 
     # 전투기 초기 위치 (x,y)
-
     x = padWidth * 0.45
     y = padHeight * 0.9
     fighterX = 0
@@ -119,6 +128,7 @@ def runGame():
     rockSize = rock.get_rect().size # 운석 실제 크기
     rockWidth = rockSize[0]
     rockHeight = rockSize[1]
+    destroySound = pygame.mixer.Sound(random.choice(explsionSound))
 
 
     # 운석 초기 위치 설정 - Yu
@@ -127,7 +137,6 @@ def runGame():
     rockSpeed = 2
 
     # 전투기 미사일에 운석이 맞았을 경우 True
-
     isShot = False
     shotCount = 0
     rockPassed = 0
@@ -136,78 +145,34 @@ def runGame():
     onGame = False
     while not onGame:
         for event in pygame.event.get():
-            if event.type in  [pygame.QUIT]: #게임 프로그램 종료
+            if event.type in [pygame.QUIT]: #게임 프로그램 종료
                 pygame.quit()
                 sys.exit()
 
-        drawObject(background, 0, 0) #배경화면 그리기 -Han
-        pygame.display.update() #게임화면을 다시 그림 -Han
-        clock.tick(60) # 게임화면의 초당 프레임수를 60으로 설정 - Yu
-
-    pygame.quit() # pygame 종료 - Yu
-
-        drawObject(background, 0, 0) #배경화면 그리기
-        pygame.display.update() #Han 게임화면을 다시 그림
-
-        drawObject(fighter, x, y)
-
-
             # 전투기 움직이기
             if event.type in [pygame.KEYDOWN]:
-                if event.key == pygame.K_LEFT: #전투기 왼쪽으로 이동
-                    fighterX -= 5
-
-                elif event.key == pygame.K_RIGHT: #전투기 오른쪽으로 이동
-                    fighterX += 5
-
+                if event.key == pygame.K_LEFT:  # 전투기 왼쪽으로 이동
+                   fighterX -= 5
+                elif event.key == pygame.K_RIGHT:  # 전투기 오른쪽으로 이동
+                   fighterX += 5
                 elif event.key == pygame.K_SPACE:  # Sae 미사일발사
-                    missileSound.play()
-                    missileX = x + fighterWidth/2
-                    missileY = y - fighterHeight
-                    missileXY.append([missileX, missileY])
+                        missileSound.play()
+                        missileX = x + fighterWidth / 2
+                        missileY = y - fighterHeight
+                        missileXY.append([missileX, missileY])
 
             if event.type in [pygame.KEYUP]:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     fighterX = 0
 
 
-        drawObject(background, 0, 0)  # 배경화면 그리기
+        drawObject(background, 0, 0) #배경화면 그리기 -Han
+        drawObject(fighter, x, y)
 
-            # Han 전투기가 운석과 충돌했는지 체크
-            if y < rockY + rockHeight:
-                if(rockX > x and rockX < x + fighterWidth) or (rockX + rockWidth >x and rockX + rockWidth< x + fighterWidth):
-                    crash()
-
-            drawObject(figther, x, y) #비행기를 게임 화면의 (x, y) 좌표에 그림
-
-            if rockPassed == 3: # Han 운석 3개 놓치면 게임 오버
-                gameOver()
-
-
-            # 운석을 맞춘 경우
-           if isShot:
-                #운석 폭발
-                drawObject(explosion, rockX, rockY)
-                destroySound.play()
-
-                #새로운 운석(랜덤)
-                rock= pygame.image.load(random.choice(rockImage))
-                rockSize = rock.get_rect().size
-                rockWidth = rockSize[0]
-                rockHeight = rockSize[1]
-                rockX = random.randrange(0, padWidth - rockWidth)
-                rockY = 0
-                destroySound = pygame.mixer.Sound(random.choice(explsionSound))
-                isShot = False
-
-                # Han 운석 맞추면 속도 증가
-                rockSpeed += 0.02
-                if rockSpeed >= 10:
-                    rockSpeed = 10
-
-
-
-
+        #미사일 오브젝트 그리기
+        if len(missileXY) != 0:
+            for bx, by in missileXY:
+                drawObject(missile, bx, by)
 
 
         # Sae 미사일 발사 화면에 그리기
@@ -228,12 +193,10 @@ def runGame():
                     except:
                         pass
 
-        if len(missileXY) != 0:
-            for bx, by in missileXY:
-                drawObject(missile, bx, by)
+        # Sae 운석 맞춘 점수 표시
+        writeScore(shotCount)
 
         rockY += rockSpeed # 운석이 아래로 떨어질 때 y좌표 증가 - Yu
-
         # 운석이 지구로 떨어진 경우(화면 밖으로) - Yu
         if rockY > padHeight:
             # 새로운 운석 생성(랜덤)
@@ -241,44 +204,64 @@ def runGame():
             rockSize = rock.get_rect().size
             rockWidth = rockSize[0]
             rockHeight = rockSize[1]
-            destroySound = pygame.mixer.Sound(random.choice(explsionSound))
             rockX = random.randrange(0, padWidth - rockWidth)
             rockY = 0
-
-        # 운석을 맞춘 경우
-        if isShot:
-            # 운석 폭발
-            drawObject(explosion, rockX, rockY) # 운석 폭발 그리기
-
-            # 새로운 운석(랜덤)
-            rock = pygame.image.load(random.choice(rockImage))
-            rockSize = rock.get_rect().size
-            rockWidth = rockSize[0]
-            rockHeight = rockSize[1]
-            rockX = random.randrange(0, padWidth - rockWidth)
-            rockY = 0
-            isShot = False
-
-        drawObject(rock, rockX, rockY) # 운석 그리기
-
-
-
-       # Sae 운석 맞춘 점수 표시
-        writeScore(shotCount)
-
-        # 운석이 지구로 떨어진 경우
-        if rockY > padHeight:
-            # 새로운 운석(랜덤)
-
             rockPassed += 1
+
+
+
+
+        if rockPassed == 3: # Han 운석 3개 놓치면 게임 오버
+            gameOver()
 
         # Sae 놓친 운석 수 표시
         writePassed(rockPassed)
 
+        # 플레이어 위치 재조정
+        x += fighterX
+        if x < 0:
+            x = 0
+        elif x > padWidth - fighterWidth:
+            x = padWidth - fighterWidth
 
 
 
 
+        # Han 전투기가 운석과 충돌했는지 체크
+        if y < rockY + rockHeight:
+            if (rockX > x and rockX < x + fighterWidth) or (rockX + rockWidth > x and rockX + rockWidth < x + fighterWidth):
+                crash()
+
+
+        # 운석을 맞춘 경우
+        if isShot:
+
+           # 운석 폭발
+           drawObject(explosion, rockX, rockY)
+           destroySound.play()
+
+           # 새로운 운석(랜덤). 파괴되면 새로운 운석 생성
+           rock = pygame.image.load(random.choice(rockImage))
+           rockSize = rock.get_rect().size
+           rockWidth = rockSize[0]
+           rockHeight = rockSize[1]
+           rockX = random.randrange(0, padWidth - rockWidth)
+           rockY = 0
+           destroySound = pygame.mixer.Sound(random.choice(explsionSound))
+           isShot = False
+
+           # Han 운석 맞추면 속도 증가
+           rockSpeed += 0.02
+           if rockSpeed >= 10:
+               rockSpeed = 10
+
+
+        drawObject(rock, rockX, rockY)  # 장애물 그리기
+
+        pygame.display.update() #게임화면을 다시 그림 -Han
+        clock.tick(60) # 게임화면의 초당 프레임수를 60으로 설정 - Yu
+
+    pygame.quit() # pygame 종료 - Yu
 
 initGame()
 runGame()
