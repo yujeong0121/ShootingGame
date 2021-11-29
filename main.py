@@ -118,7 +118,7 @@ def runGame():
     x = padWidth * 0.45
     y = padHeight * 0.9
     fighterX = 0
-
+    fighterY = 0  # 플레이어 움직임 y값
 
     # Sae 무기좌표 리스트
     missileXY = []
@@ -152,18 +152,25 @@ def runGame():
             # 전투기 움직이기
             if event.type in [pygame.KEYDOWN]:
                 if event.key == pygame.K_LEFT:  # 전투기 왼쪽으로 이동
-                   fighterX -= 5
+                    fighterX -= 5
                 elif event.key == pygame.K_RIGHT:  # 전투기 오른쪽으로 이동
-                   fighterX += 5
+                    fighterX += 5
+                elif event.key == pygame.K_UP:  # %플레이어가 위쪽으로 이동
+                    fighterY -= 5
+                elif event.key == pygame.K_DOWN:  # %플레이어가 아래쪽으로 이동
+                    fighterY += 5
                 elif event.key == pygame.K_SPACE:  # Sae 미사일발사
                         missileSound.play()
                         missileX = x + fighterWidth / 2
                         missileY = y - fighterHeight
                         missileXY.append([missileX, missileY])
 
-            if event.type in [pygame.KEYUP]:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+            if event.type in [pygame.KEYUP]: #방향키를 떼면
+                # 플레이어가 멈춤
+                # 위아래 움직임 추가
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     fighterX = 0
+                    fighterY = 0
 
 
         drawObject(background, 0, 0) #배경화면 그리기 -Han
@@ -224,6 +231,12 @@ def runGame():
         elif x > padWidth - fighterWidth:
             x = padWidth - fighterWidth
 
+        # 이게 게임패드 안에서만 움직이게 만드려고 하는 거 같은데
+        y += fighterY
+        if y < 0:
+            y = 0
+        elif y > padHeight - fighterHeight:
+            y = padHeight - fighterHeight
 
 
 
