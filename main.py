@@ -9,7 +9,7 @@ padHeight = 640 # 게임화면의 세로크기
 rockImage = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'hamburger.png ',
              'egg.png', 'broccoli.png', 'cabbage.png', 'carrot.png', 'vegetable.png',
              'cola.png', 'candies.png', 'chocolate.png', 'hotdog.png', 'salad.png',
-             'fish.png', 'nuts.png', 'bananas.png', 'corn.png','glass-of-water'] # 음식 이미지 추가 - Yu
+             'fish.png', 'nuts.png', 'bananas.png', 'corn.png','glass-of-water.png'] # 음식 이미지 추가 - Yu
 
 
 
