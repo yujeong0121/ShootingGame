@@ -118,7 +118,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock, play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory, background, introimage,fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock, play, exit, help, story,clickPlay, clickExit, clickHelp,clickStory, background, introimage,fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
 
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han

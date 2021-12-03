@@ -138,6 +138,7 @@ def initGame():
     missile = pygame.image.load('spoon-and-fork.png')  # Sae 미사일그림
     explosion = pygame.image.load('mouth.png') # 폭발 그림 - ho
     background = pygame.image.load('backgound.png')  # Han
+    introimage = pygame.image.load('pig.png')
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
