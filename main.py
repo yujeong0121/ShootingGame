@@ -116,11 +116,21 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
     pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
+    play = pygame.image.load('play.png')  # 플레이버튼
+    exit = pygame.image.load('exit.png')  # 나가기버튼
+    help = pygame.image.load('help.png')  # 도움말버튼
+    story = pygame.image.load('story.png')  # 스토리버튼
+
+    clickPlay = pygame.image.load('clickplay.png')  # 클릭한플레이버튼
+    clickExit = pygame.image.load('clickexit.png')  # 클릭한나가기버튼
+    clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
+    clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
+
     fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
     fighter2 = pygame.image.load('player2.png') # 마른캐릭
     clickFighter = pygame.image.load('clickplayer.png') #클릭한 뚠뚠캐릭
@@ -136,6 +146,20 @@ def initGame():
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
 
 
+    introGame = True
+    while introGame:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        drawObject(introimage, 0, 0)
+
+        playButton = Button(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
+        exitButton = Button(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
+        helpButton = Button(help, 200, 480, 60, 60, clickHelp,200,480, 3)
+        storyButton = Button(story, 200, 520, 60,60, clickStory,200,520, 4)
+        pygame.display.update()
 
 
 
@@ -145,7 +169,8 @@ def initGame():
 
 def runGame(gametypeNum, charterNum):
     global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound
-
+    pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
+    pygame.mixer.music.play()
 
     # 전투기 크기
     fighterSize = fighter.get_rect().size

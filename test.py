@@ -118,20 +118,21 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock, background, introimage,fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock, play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory, background, introimage,fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
-    pygame.display.set_caption('Diet for love') # 게임 이름 변경- Han
+    pygame.display.set_caption('Diet for love') # 게임 이름 변경- Han 그냥 바꿔봤어요 추후 상의
     play = pygame.image.load('play.png') #플레이버튼
-    exit = pygame.image.load('exit.png')
-    help = pygame.image.load('help.png')
-    story = pygame.image.load('story.png')
+    exit = pygame.image.load('exit.png') #나가기버튼
+    help = pygame.image.load('help.png') #도움말버튼
+    story = pygame.image.load('story.png') #스토리버튼
 
-    clickPlay = pygame.image.load('clickplay.png')
-    clickExit = pygame.image.load('clickexit.png')
-    clickHelp = pygame.image.load('clickhelp.png')
-    clickStory = pygame.image.load('clickstory.png')
+    clickPlay = pygame.image.load('clickplay.png') #클릭한플레이버튼
+    clickExit = pygame.image.load('clickexit.png') #클릭한나가기버튼
+    clickHelp = pygame.image.load('clickhelp.png') #클릭한도움말버튼
+    clickStory = pygame.image.load('clickstory.png') #클릭한스토리버튼
 
     fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
     fighter2 = pygame.image.load('player2.png') # 마른캐릭
@@ -157,10 +158,10 @@ def initGame():
 
         drawObject(introimage, 0, 0)
 
-        playButton = Button(fighter, 200, 400, 60, 60, clickFighter, 100, 255, 1)
-        exitButton = Button(fighter2, 200, 410, 60, 60, clickFighter2, 310, 230, 2)
-        #helpButton = Button()
-        #storyButton = Button()
+        playButton = Button(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
+        exitButton = Button(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
+        helpButton = Button(help, 200, 480, 60, 60, clickHelp,200,480, 3)
+        storyButton = Button(story, 200, 520, 60,60, clickStory,200,520, 4)
         pygame.display.update()
 
 
@@ -172,7 +173,8 @@ def initGame():
 
 def runGame(gametypeNum, charterNum):
     global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound
-
+    pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
+    pygame.mixer.music.play()
 
     # 전투기 크기
     fighterSize = fighter.get_rect().size
