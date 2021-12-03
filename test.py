@@ -1,3 +1,5 @@
+#-*- coding:utf-8 -*-
+
 import pygame
 import sys
 import random
@@ -16,6 +18,23 @@ rockImage = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'h
 
 explsionSound = ['eating1.wav','eating2.mp3','eating3.mp3']
 
+
+def game_intro():
+    intro = True
+    while intro:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        gameDisplay.fill(white)
+        titleText = pygame.font.Font('namugothic',100)
+        TextSurf,TextRect = text_objects("Diet for love",titleText)
+        TextRect.upper =((padWidth/2),(padHeight/2))
+        gameDisplay.blit(TextSurf,TextRect)
+        pygame.display.update()
+        clock.tick(15)
 
 # Sae 운석을 맞춘 개수 계산
 def writeScore(count):
