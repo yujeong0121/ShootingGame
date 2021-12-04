@@ -120,8 +120,8 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
 
             elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
 
-                drawObject(storyimg, 0, 0)
-
+                drawObject(storyline, 0, 0)
+                pygame.display.update()
 
 class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
@@ -151,7 +151,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory,storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -167,7 +167,7 @@ def initGame():
     clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
     clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
 
-    storyimg = pygame.image.load('storyline.png')
+    storyline = pygame.image.load('storyline.png')
 
 
     fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
