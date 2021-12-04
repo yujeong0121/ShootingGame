@@ -15,10 +15,12 @@ rockImage = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'h
 
 
 
-
+pygame.init()
 explsionSound = ['eating1.wav','eating2.mp3','eating3.mp3']
 
 choice = 0
+
+
 # Sae 운석을 맞춘 개수 계산
 def writeScore(count):
     global gamePad
@@ -26,7 +28,7 @@ def writeScore(count):
 
     # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("gulim")
     font = pygame.font.SysFont(str(ableFonts[index]), 20, True, True)
     text = font.render('파괴한 운석 수:' + str(count), True, (255, 255, 255))
     gamePad.blit(text, (10, 0))
@@ -39,7 +41,7 @@ def writePassed(count):
 
     # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("gulim")
     font = pygame.font.SysFont(str(ableFonts[index]), 20, True, True)
     text = font.render('놓친 운석:' + str(count), True, (255, 0, 0))
     gamePad.blit(text, (360, 0))
@@ -50,7 +52,7 @@ def writeMessage(text, textType, characterNum):
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("gulim")
     font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
     text = font.render(text, True, (255,0,0))
 
@@ -87,43 +89,8 @@ def choiceCharacter():
     writeMessage('캐릭터를 선택해주세요', 2, 0)
 
 
-def help():
-    global gamePad
 
-
-def story():
-    global gamePad
-
-
-
-
-
-class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요.
-    def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type2):
-        mouse2 = pygame.mouse.get_pos()
-        click2 = pygame.mouse.get_pressed()
-
-        drawObject(img_in, x, y)
-
-        if x + width > mouse2[0] > x and y + height > mouse2[1] > y:  # 마우스가 캐릭터 위에 있을 때
-            drawObject(img_act, x_act, y_act)  # 선택효과 있는 이미지로 그려줌
-            if click2[0] and type2 == 1:  # play 버튼 눌렀을 때
-                runGame(0,0)  # runGame 으로 들어가서 캐릭터 고르기
-
-            elif click2[0] and type2 == 2:  # exit 버튼 눌렀을 때
-                pygame.quit()  # 나가기
-                sys.exit()
-
-            elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
-                pygame.quit()  # story 나오게 하기 #아직 그냥 나가기로 설정했어요.
-                sys.exit()
-
-            elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
-
-                drawObject(storyline, 0, 0)
-                pygame.display.update()
-
-class Button1:
+class Button:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -151,24 +118,21 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory,storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock, play, exit, help, story,clickPlay, clickExit, clickHelp,clickStory, background, introimage,fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
-    pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
+    pygame.display.set_caption('Diet for love') # 게임 이름 변경- Han 그냥 바꿔봤어요 추후 상의
+    play = pygame.image.load('play.png') #플레이버튼
+    exit = pygame.image.load('exit.png') #나가기버튼
+    help = pygame.image.load('help.png') #도움말버튼
+    story = pygame.image.load('story.png') #스토리버튼
 
-    play = pygame.image.load('play.png')  # 플레이버튼
-    exit = pygame.image.load('exit.png')  # 나가기버튼
-    help = pygame.image.load('help.png')  # 도움말버튼
-    story = pygame.image.load('story.png')  # 스토리버튼
-
-    clickPlay = pygame.image.load('clickplay.png')  # 클릭한플레이버튼
-    clickExit = pygame.image.load('clickexit.png')  # 클릭한나가기버튼
-    clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
-    clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
-
-    storyline = pygame.image.load('storyline.png')
-
+    clickPlay = pygame.image.load('clickplay.png') #클릭한플레이버튼
+    clickExit = pygame.image.load('clickexit.png') #클릭한나가기버튼
+    clickHelp = pygame.image.load('clickhelp.png') #클릭한도움말버튼
+    clickStory = pygame.image.load('clickstory.png') #클릭한스토리버튼
 
     fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
     fighter2 = pygame.image.load('player2.png') # 마른캐릭
@@ -176,15 +140,14 @@ def initGame():
     clickFighter2 = pygame.image.load('clickplayer2.png') #클릭한 마른캐릭
     missile = pygame.image.load('spoon-and-fork.png')  # Sae 미사일그림
     explosion = pygame.image.load('mouth.png') # 폭발 그림 - ho
-    background = pygame.image.load('backgound.png')  # Han
-    introimage = pygame.image.load('pig.png')
+    background = pygame.image.load('backgound.png')
+    introimage = pygame.image.load('pig.png')# Han
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
-    pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
+    pygame.mixer.music.load('eating2.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
     missileSound = pygame.mixer.Sound('throwing.mp3')
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
-
 
     introGame = True
     while introGame:
@@ -194,12 +157,17 @@ def initGame():
                 quit()
 
         drawObject(introimage, 0, 0)
+        largeText = pygame.font.Font("gulim",114)
+        TextSurf, TextRect = text_objects("Diet Go!", largeText)
+        TextRect.center = (200,200)
+        gamePad.blit(TextSurf, TextRect)
 
-        playButton = Button2(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
-        exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
-        helpButton = Button2(help, 200, 480, 60, 60, clickHelp,200,480, 3)
-        storyButton = Button2(story, 200, 520, 60,60, clickStory,200,520, 4)
+        playButton = Button(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
+        exitButton = Button(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
+        helpButton = Button(help, 200, 480, 60, 60, clickHelp,200,480, 3)
+        storyButton = Button(story, 200, 520, 60,60, clickStory,200,520, 4)
         pygame.display.update()
+
 
 
 
@@ -284,8 +252,8 @@ def runGame(gametypeNum, charterNum):
         if gametypeNum == 0: # 최초 캐릭터 선택
 
          drawObject(background, 0, 0)  # 배경화면 그리기 -Han
-         fighter1Button = Button1(fighter, 100, 255, 60, 60, clickFighter, 100, 255, 1)
-         fighter2Button = Button1(fighter2, 310, 230, 60, 60, clickFighter2, 310, 230, 2)
+         fighter1Button = Button(fighter, 100, 255, 60, 60, clickFighter, 100, 255, 1)
+         fighter2Button = Button(fighter2, 310, 230, 60, 60, clickFighter2, 310, 230, 2)
          choiceCharacter() #캐릭터를 선택해주세요 글씨
 
 
@@ -399,6 +367,9 @@ def runGame(gametypeNum, charterNum):
             clock.tick(60) # 게임화면의 초당 프레임수를 60으로 설정 - Yu
 
     pygame.quit() # pygame 종료 - Yu
+
+
+
 
 initGame()
 runGame(0, 0)
