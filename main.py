@@ -87,8 +87,43 @@ def choiceCharacter():
     writeMessage('캐릭터를 선택해주세요', 2, 0)
 
 
+def help():
+    global gamePad
 
-class Button:
+
+def story():
+    global gamePad
+
+
+
+
+
+class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요.
+    def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type2):
+        mouse2 = pygame.mouse.get_pos()
+        click2 = pygame.mouse.get_pressed()
+
+        drawObject(img_in, x, y)
+
+        if x + width > mouse2[0] > x and y + height > mouse2[1] > y:  # 마우스가 캐릭터 위에 있을 때
+            drawObject(img_act, x_act, y_act)  # 선택효과 있는 이미지로 그려줌
+            if click2[0] and type2 == 1:  # play 버튼 눌렀을 때
+                runGame(0,0)  # runGame 으로 들어가서 캐릭터 고르기
+
+            elif click2[0] and type2 == 2:  # exit 버튼 눌렀을 때
+                pygame.quit()  # 나가기
+                sys.exit()
+
+            elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
+                pygame.quit()  # story 나오게 하기 #아직 그냥 나가기로 설정했어요.
+                sys.exit()
+
+            elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
+
+                drawObject(storyimg, 0, 0)
+
+
+class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -121,6 +156,7 @@ def initGame():
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
     pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
+
     play = pygame.image.load('play.png')  # 플레이버튼
     exit = pygame.image.load('exit.png')  # 나가기버튼
     help = pygame.image.load('help.png')  # 도움말버튼
@@ -130,6 +166,9 @@ def initGame():
     clickExit = pygame.image.load('clickexit.png')  # 클릭한나가기버튼
     clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
     clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
+
+    storyimg = pygame.image.load('storyline.png')
+
 
     fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
     fighter2 = pygame.image.load('player2.png') # 마른캐릭
@@ -156,10 +195,10 @@ def initGame():
 
         drawObject(introimage, 0, 0)
 
-        playButton = Button(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
-        exitButton = Button(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
-        helpButton = Button(help, 200, 480, 60, 60, clickHelp,200,480, 3)
-        storyButton = Button(story, 200, 520, 60,60, clickStory,200,520, 4)
+        playButton = Button2(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
+        exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
+        helpButton = Button2(help, 200, 480, 60, 60, clickHelp,200,480, 3)
+        storyButton = Button2(story, 200, 520, 60,60, clickStory,200,520, 4)
         pygame.display.update()
 
 
@@ -245,8 +284,8 @@ def runGame(gametypeNum, charterNum):
         if gametypeNum == 0: # 최초 캐릭터 선택
 
          drawObject(background, 0, 0)  # 배경화면 그리기 -Han
-         fighter1Button = Button(fighter, 100, 255, 60, 60, clickFighter, 100, 255, 1)
-         fighter2Button = Button(fighter2, 310, 230, 60, 60, clickFighter2, 310, 230, 2)
+         fighter1Button = Button1(fighter, 100, 255, 60, 60, clickFighter, 100, 255, 1)
+         fighter2Button = Button1(fighter2, 310, 230, 60, 60, clickFighter2, 310, 230, 2)
          choiceCharacter() #캐릭터를 선택해주세요 글씨
 
 
