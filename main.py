@@ -105,8 +105,6 @@ def choiceCharacter():
 
 
 
-
-
 def occur_explosion(surface, x, y):
     explosion_image = pygame.image.load('explosion.png')
     explosion_rect = explosion_image.get_rect()
@@ -227,7 +225,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg
+    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, clearimg, overimg
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -257,6 +255,10 @@ def initGame():
     background = pygame.image.load('backgound2.png')  # Han
     introimage = pygame.image.load('pig.png')
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
+    replaybuttonimg = pygame.image.load('rere.jpg')
+    exitbottonimg = pygame.image.load('exit2.jpg')
+    clearimg = pygame.image.load('clearimg.jpg')
+    overimg = pygame.image.load('overimg2.jpg')
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
@@ -284,7 +286,40 @@ def initGame():
 
 
 
+def gameclear():
+    clear = True
 
+    while clear:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(clearimg,0,0)
+
+
+
+        replayButton = Button2(replaybuttonimg, 200, 400, 60, 60, replaybuttonimg, 200, 400, 1)
+        exitButton = Button2(exitbottonimg, 200, 440, 60, 60, exitbottonimg, 200, 440, 2)
+        pygame.display.update()
+        clock.tick(15)
+
+def gameover():
+    over = True
+
+    while over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(overimg , 0, 0)
+
+
+        replayButton = Button2(replaybuttonimg, 200, 400, 60, 60, replaybuttonimg, 200, 400, 1)
+        exitButton = Button2(exitbottonimg, 200, 440, 60, 60, exitbottonimg, 200, 440, 2)
+        pygame.display.update()
+        clock.tick(15)
 
 
 
@@ -458,10 +493,10 @@ def runGame(gametypeNum, charterNum):
 
             # 감량/증량 값이 0이면 게임오버
             if score <= 0:
-                gameOver(charterNum)
+                gameover()
 
             if score >= 50:  #50넘었을 때 게임 클리어
-                pass
+                gameclear()
 
             # 감량/증량 점수 표시
             writeScore(score)
