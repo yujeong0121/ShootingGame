@@ -8,13 +8,6 @@ from time import sleep
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
 
-rockImage = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'hamburger.png ',
-             'egg.png', 'broccoli.png', 'cabbage.png', 'carrot.png', 'vegetable.png',
-             'cola.png', 'candies.png', 'chocolate.png', 'hotdog.png', 'salad.png',
-             'fish.png', 'nuts.png', 'bananas.png', 'corn.png','glass-of-water.png'] # 음식 이미지 추가 - Yu
-
-
-
 
 explsionSound = ['eating1.wav','eating2.mp3','eating3.mp3']
 
@@ -95,7 +88,12 @@ def story():
     global gamePad
 
 
-
+def occur_explosion(surface, x, y):
+    explosion_image = pygame.image.load('explosion.png')
+    explosion_rect = explosion_image.get_rect()
+    explosion_rect.x = x
+    explosion_rect.y = y
+    surface.blit(explosion_image, explosion_rect)
 
 
 class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요.
@@ -140,6 +138,64 @@ class Button1:
               drawObject(img_in, x, y)
 
 
+#음식 클래스
+class Food(pygame.sprite.Sprite):
+    def __init__(self, xpos, ypos, speed):
+        super(Food, self).__init__()
+        car_image1 = ['egg.png', 'broccoli.png', 'cabbage.png', 'carrot.png', 'vegetable.png',
+                      'salad.png', 'fish.png', 'nuts.png', 'bananas.png', 'corn.png', 'glass-of-water.png']
+        car_image2 = ['icecream.png', 'fried-chicken.png ', 'pizza.png ', 'cake.png ', 'hamburger.png ',
+                      'cola.png', 'candies.png', 'chocolate.png', 'hotdog.png']
+
+        # 이미지중에서 랜덤으로 선택한다.
+        choiceNum = random.randint(0, 2)
+        if choiceNum == 0:  # 몸에 좋은 음식
+            self.image = pygame.image.load(random.choice(car_image1))
+            self.add_minus_score = 2
+        else: #몸에 나쁜 음식
+            self.image = pygame.image.load(random.choice(car_image2))
+            self.add_minus_score = -2
+
+
+        #self.image = pygame.image.load(random.choice(rock_images))
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+        self.speed = speed
+
+    def update(self):
+        self.rect.y += self.speed
+
+    def out_of_screen(self): # 음식이 떨어져서 화면밖으로 나갔을 때
+        if self.rect.y > padHeight:
+            return True
+
+
+
+class Missile(pygame.sprite.Sprite):
+    def __init__(self, xpos, ypos, speed):
+        super(Missile, self).__init__()
+        self.image = pygame.image.load('spoon-and-fork.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+        self.speed = speed
+        self.sound = pygame.mixer.Sound('throwing.mp3')
+
+
+    def launch(self):
+        self.sound.play()   # 미사일 날라갈때 소리
+
+    def update(self):
+        self.rect.y -= self.speed
+        if self.rect.y + self.rect.height < 0:
+            self.kill()
+
+    def collide(self, sprites): #미사일이 충돌했을 때
+        for sprite in sprites:
+            if pygame.sprite.collide_rect(self, sprite):
+                return sprite
+
 
 
 
@@ -170,8 +226,8 @@ def initGame():
     storyline = pygame.image.load('storyline.png')
 
     character_choice_bg = pygame.image.load('characterchoicebg.png')
-    fighter = pygame.image.load('player.png') # 뚠뚠캐릭
-    fighter2 = pygame.image.load('player2.png') # 마른캐릭
+    fighter = pygame.image.load('player.png') # 뚠뚠 캐릭
+    fighter2 = pygame.image.load('player2.png') # 마른 캐릭
     clickFighter = pygame.image.load('clickplayer.png') #클릭한 뚠뚠캐릭
     clickFighter2 = pygame.image.load('clickplayer2.png') #클릭한 마른캐릭
     missile = pygame.image.load('spoon-and-fork.png')  # Sae 미사일그림
@@ -223,28 +279,37 @@ def runGame(gametypeNum, charterNum):
     fighterX = 0
     fighterY = 0  # 플레이어 움직임 y값
 
-    # Sae 무기좌표 리스트
-    missileXY = []
+    # # Sae 무기좌표 리스트
+    # missileXY = []
+
+    #미사일, 음식들 세팅
+    missiles = pygame.sprite.Group()
+    foods = pygame.sprite.Group()
+    # start_ticks = pygame.time.get_ticks()
+
+    # 점수
+    score = 10
+
 
     # 음식 랜덤 생성 - Yu
-    rock = pygame.image.load(random.choice(rockImage))
-    rockSize = rock.get_rect().size # 운석 실제 크기
-    rockWidth = rockSize[0]
-    rockHeight = rockSize[1]
-    destroySound = pygame.mixer.Sound(random.choice(explsionSound))
+    # rock = pygame.image.load(random.choice(rockImage))
+    # rockSize = rock.get_rect().size # 운석 실제 크기
+    # rockWidth = rockSize[0]
+    # rockHeight = rockSize[1]
+    # destroySound = pygame.mixer.Sound(random.choice(explsionSound))
 
 
     # 운석 초기 위치 설정 - Yu
-    rockX = random.randrange(0, padWidth - rockWidth)
-    rockY = 0
-    rockSpeed = 2
+    # rockX = random.randrange(0, padWidth - rockWidth)
+    # rockY = 0
+    # rockSpeed = 2
 
     # 전투기 미사일에 운석이 맞았을 경우 True
-    isShot = False
+    #isShot = False
     shotCount = 0
     rockPassed = 0
 
-    choice = 0
+
 
     onGame = False
     while not onGame:
@@ -265,9 +330,15 @@ def runGame(gametypeNum, charterNum):
                     fighterY += 5
                 elif event.key == pygame.K_SPACE:  # Sae 미사일발사
                     missileSound.play()
-                    missileX = x + fighterWidth / 2
-                    missileY = y - fighterHeight
-                    missileXY.append([missileX, missileY])
+                    missile = Missile(x + fighterWidth / 2, y - fighterHeight, 10)  # x의 정 가운데에서 미사일이 나간다
+                    missile.launch()
+                    missiles.add(missile)  # 미사일스 에 미사일 그룹을 추가
+
+                    # missileX = x + fighterWidth / 2
+                    # missileY = y - fighterHeight
+                    # missileXY.append([missileX, missileY]
+
+
 
             if event.type == pygame.KEYUP:  # 방향키를 떼면
                 # 플레이어가 멈춤
@@ -275,9 +346,6 @@ def runGame(gametypeNum, charterNum):
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     fighterX = 0
                     fighterY = 0
-
-
-
 
 
 
@@ -299,54 +367,83 @@ def runGame(gametypeNum, charterNum):
                 drawObject(fighter2, x, y-23) # 머리만 나와서 -23해서 위치 조정함
 
 
-            #미사일 오브젝트 그리기
-            if len(missileXY) != 0:
-                for bx, by in missileXY:
-                    drawObject(missile, bx, by)
-
-
-            # Sae 미사일 발사 화면에 그리기
-            if len(missileXY) != 0:
-                for i, bxy in enumerate(missileXY):  # Sae 미사일요소에 대해 반복함
-                    bxy[1] -= 10  # Sae 총알의 y좌표 -10 (위로 이동)
-                    missileXY[i][1] = bxy[1]
-
-                    if bxy[1] < rockY:
-                        if bxy[0] > rockX and bxy[0] < rockX + rockWidth:
-                            missileXY.remove(bxy)
-                            isShot = True
-                            shotCount += 1
-
-                    if bxy[1] <= 0:  #Sae 미사일이 화면 밖을 벗어나면
-                        try:
-                            missileXY.remove(bxy)  #Sae 미사일 제거
-                        except:
-                            pass
-
-
-
-            # Sae 운석 맞춘 점수 표시
-            writeScore(shotCount)
-
-            rockY += rockSpeed # 운석이 아래로 떨어질 때 y좌표 증가 - Yu
-            # 운석이 지구로 떨어진 경우(화면 밖으로) - Yu
-            if rockY > padHeight:
-                # 새로운 운석 생성(랜덤)
-                rock = pygame.image.load(random.choice(rockImage))
-                rockSize = rock.get_rect().size
-                rockWidth = rockSize[0]
-                rockHeight = rockSize[1]
-                rockX = random.randrange(0, padWidth - rockWidth)
-                rockY = 0
-                rockPassed += 1
+            # #미사일 오브젝트 그리기
+            # if len(missileXY) != 0:
+            #     for bx, by in missileXY:
+            #         drawObject(missile, bx, by)
+            #
+            #
+            # # Sae 미사일 발사 화면에 그리기
+            # if len(missileXY) != 0:
+            #     for i, bxy in enumerate(missileXY):  # Sae 미사일요소에 대해 반복함
+            #         bxy[1] -= 10  # Sae 총알의 y좌표 -10 (위로 이동)
+            #         missileXY[i][1] = bxy[1]
+            #
+            #         if bxy[1] < rockY:
+            #             if bxy[0] > rockX and bxy[0] < rockX + rockWidth:
+            #                 missileXY.remove(bxy)
+            #                 isShot = True
+            #                 shotCount += 1
+            #
+            #         if bxy[1] <= 0:  #Sae 미사일이 화면 밖을 벗어나면
+            #             try:
+            #                 missileXY.remove(bxy)  #Sae 미사일 제거
+            #             except:
+            #                 pass
 
 
 
-            if rockPassed == 3: # Han 운석 3개 놓치면 게임 오버
+            #음식 생성되고 랜덤으로 스피드 주는 곳
+            if random.randint(1, 50) == 1:
+                for i in range(2):
+                    speed = random.randint(1, 7)
+                    food = Food(random.randint(0, padWidth - 30), 0, speed)
+                    foods.add(food)
+
+
+
+            #미사일 생성
+            for missile in missiles:
+                food = missile.collide(foods)
+                if food: # 음식 맞추면
+                    score += food.add_minus_score #좋은음식 +2, 나쁜음식 -2
+                    missile.kill()
+                    food.kill()
+                    occur_explosion(gamePad, food.rect.x, food.rect.y)
+
+
+            # 감량/증량 값이 0이면 게임오버
+            if score <= 0:
                 gameOver(charterNum)
 
+            # 감량/증량 점수 표시
+            writeScore(score)
+
+            foods.update()
+            foods.draw(gamePad)
+            missiles.update()
+            missiles.draw(gamePad)
+            pygame.display.flip()
+
+
+            #
+            # rockY += rockSpeed # 운석이 아래로 떨어질 때 y좌표 증가 - Yu
+            # # 운석이 지구로 떨어진 경우(화면 밖으로) - Yu
+            # if rockY > padHeight:
+            #     # 새로운 운석 생성(랜덤)
+            #     rock = pygame.image.load(random.choice(rockImage))
+            #     rockSize = rock.get_rect().size
+            #     rockWidth = rockSize[0]
+            #     rockHeight = rockSize[1]
+            #     rockX = random.randrange(0, padWidth - rockWidth)
+            #     rockY = 0
+            #     rockPassed += 1
+
+            # if rockPassed == 3: # Han 운석 3개 놓치면 게임 오버
+
             # Sae 놓친 운석 수 표시
-            writePassed(rockPassed)
+            #writePassed(rockPassed)
+
 
             # 플레이어 위치 재조정
             x += fighterX
@@ -365,35 +462,35 @@ def runGame(gametypeNum, charterNum):
 
 
             # Han 전투기가 운석과 충돌했는지 체크
-            if y < rockY + rockHeight:
-                if (rockX > x and rockX < x + fighterWidth) or (rockX + rockWidth > x and rockX + rockWidth < x + fighterWidth):
-                    crash(charterNum)
+            # if y < rockY + rockHeight:
+            #     if (rockX > x and rockX < x + fighterWidth) or (rockX + rockWidth > x and rockX + rockWidth < x + fighterWidth):
+            #         crash(charterNum)
 
 
-            # 운석을 맞춘 경우
-            if isShot:
+            # # 운석을 맞춘 경우
+            # if isShot:
+            #
+            #    # 운석 폭발
+            #    drawObject(explosion, rockX, rockY)
+            #    destroySound.play()
+            #
+            #    # 새로운 햣 운석(랜덤). 파괴되면 새로운 운석 생성
+            #    rock = pygame.image.load(random.choice(rockImage))
+            #    rockSize = rock.get_rect().size
+            #    rockWidth = rockSize[0]
+            #    rockHeight = rockSize[1]
+            #    rockX = random.randrange(0, padWidth - rockWidth)
+            #    rockY = 0
+            #    destroySound = pygame.mixer.Sound(random.choice(explsionSound))
+            #    isShot = False
+            #
+            #    # Han 운석 맞추면 속도 증가
+            #    rockSpeed += 0.02
+            #    if rockSpeed >= 10:
+            #        rockSpeed = 10
 
-               # 운석 폭발
-               drawObject(explosion, rockX, rockY)
-               destroySound.play()
 
-               # 새로운 햣 운석(랜덤). 파괴되면 새로운 운석 생성
-               rock = pygame.image.load(random.choice(rockImage))
-               rockSize = rock.get_rect().size
-               rockWidth = rockSize[0]
-               rockHeight = rockSize[1]
-               rockX = random.randrange(0, padWidth - rockWidth)
-               rockY = 0
-               destroySound = pygame.mixer.Sound(random.choice(explsionSound))
-               isShot = False
-
-               # Han 운석 맞추면 속도 증가
-               rockSpeed += 0.02
-               if rockSpeed >= 10:
-                   rockSpeed = 10
-
-
-            drawObject(rock, rockX, rockY)  # 장애물 그리기
+            #drawObject(rock, rockX, rockY)  # 장애물 그리기
 
             pygame.display.update() #게임화면을 다시 그림 -Han
             clock.tick(60) # 게임화면의 초당 프레임수를 60으로 설정 - Yu
