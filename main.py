@@ -84,7 +84,7 @@ def gameOver(chracterNum):
 
 def choiceCharacter():
     global gamePad
-    writeMessage('캐릭터를 선택해주세요', 2, 0)
+    writeMessage('', 2, 0)
 
 
 def help():
@@ -151,7 +151,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory,storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound
+    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory,storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -169,14 +169,14 @@ def initGame():
 
     storyline = pygame.image.load('storyline.png')
 
-
-    fighter = pygame.image.load('player.png') # 전투기 그림 - ho #뚱뚱캐릭
+    character_choice_bg = pygame.image.load('characterchoicebg.png')
+    fighter = pygame.image.load('player.png') # 뚠뚠캐릭
     fighter2 = pygame.image.load('player2.png') # 마른캐릭
     clickFighter = pygame.image.load('clickplayer.png') #클릭한 뚠뚠캐릭
     clickFighter2 = pygame.image.load('clickplayer2.png') #클릭한 마른캐릭
     missile = pygame.image.load('spoon-and-fork.png')  # Sae 미사일그림
     explosion = pygame.image.load('mouth.png') # 폭발 그림 - ho
-    background = pygame.image.load('backgound.png')  # Han
+    background = pygame.image.load('backgound2.png')  # Han
     introimage = pygame.image.load('pig.png')
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
 
@@ -208,7 +208,7 @@ def initGame():
 
 
 def runGame(gametypeNum, charterNum):
-    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound
+    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play()
 
@@ -283,9 +283,9 @@ def runGame(gametypeNum, charterNum):
 
         if gametypeNum == 0: # 최초 캐릭터 선택
 
-         drawObject(background, 0, 0)  # 배경화면 그리기 -Han
-         fighter1Button = Button1(fighter, 100, 255, 60, 60, clickFighter, 100, 255, 1)
-         fighter2Button = Button1(fighter2, 310, 230, 60, 60, clickFighter2, 310, 230, 2)
+         drawObject(character_choice_bg, 0, 0)  # 배경화면 그리기 -Han
+         fighter1Button = Button1(fighter, 100, 255, 60, 60, clickFighter, 97, 252, 1)
+         fighter2Button = Button1(fighter2, 310, 230, 60, 60, clickFighter2, 307, 227, 2)
          choiceCharacter() #캐릭터를 선택해주세요 글씨
 
 
