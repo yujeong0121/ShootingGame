@@ -87,15 +87,6 @@ def choiceCharacter():
     writeMessage('', 2, 0)
 
 
-def help():
-    global gamePad
-
-
-def story():
-    global gamePad
-
-
-
 
 
 class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요.
@@ -115,8 +106,8 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
                 sys.exit()
 
             elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
-                pygame.quit()  # story 나오게 하기 #아직 그냥 나가기로 설정했어요.
-                sys.exit()
+                drawObject(helpimg, 0,0)
+                pygame.display.update()
 
             elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
 
@@ -151,11 +142,12 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,play, exit, help, story, clickPlay, clickExit, clickHelp,clickStory,storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg
+    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
-    pygame.display.set_caption('PyShooting') # 게임 이름 추가 - Yu
+    pygame.display.set_caption('Diet Go!') # 게임 이름 추가 - Yu
+    title = pygame.image.load('title.png') #게임 제목
 
     play = pygame.image.load('play.png')  # 플레이버튼
     exit = pygame.image.load('exit.png')  # 나가기버튼
@@ -167,7 +159,8 @@ def initGame():
     clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
     clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
 
-    storyline = pygame.image.load('storyline.png')
+    helpimg = pygame.image.load('helpimg.png')        # 조작법 이미지
+    storyline = pygame.image.load('storyline.png')  # 스토리라인 이미지
 
     character_choice_bg = pygame.image.load('characterchoicebg.png')
     fighter = pygame.image.load('player.png') # 뚠뚠캐릭
@@ -194,6 +187,8 @@ def initGame():
                 quit()
 
         drawObject(introimage, 0, 0)
+
+        drawObject(title, 130, 40)
 
         playButton = Button2(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
         exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
