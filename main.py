@@ -19,7 +19,7 @@ def writeScore(count):
 
     # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("휴먼아미체")
     font = pygame.font.SysFont(str(ableFonts[index]), 20, True, True)
     text = font.render('파괴한 운석 수:' + str(count), True, (255, 255, 255))
     gamePad.blit(text, (10, 0))
@@ -32,10 +32,22 @@ def writePassed(count):
 
     # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("휴먼아미체")
     font = pygame.font.SysFont(str(ableFonts[index]), 20, True, True)
     text = font.render('놓친 운석:' + str(count), True, (255, 0, 0))
     gamePad.blit(text, (360, 0))
+
+def writeUlt(times):
+    global gamePad
+    # font = pygame.font.Font("폰트", 20)
+
+    # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
+    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
+    index = ableFonts.index("휴먼아미체")
+    font = pygame.font.SysFont(str(ableFonts[index]), 20, True, True)
+    text = font.render('궁극기:' + str(times), True, (255, 0, 0))
+    gamePad.blit(text, (360, 0))
+
 
 
 # Han 게임 메세지 출력
@@ -43,7 +55,7 @@ def writeMessage(text, textType, characterNum):
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
     ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("nanumgothic")
+    index = ableFonts.index("휴먼아미체")
     font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
     text = font.render(text, True, (255,0,0))
 
@@ -64,6 +76,18 @@ def writeMessage(text, textType, characterNum):
         textpos.center = (padWidth / 2, padHeight / 5)
         gamePad.blit(text, textpos)
         pygame.display.update()
+
+def writeMessage1(text): #Chan 일시적으로 메세지 표현
+    global gamePad
+    #textfont = pygame.font.Font('폰트', 80)
+    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
+    index = ableFonts.index("휴먼아미체")
+    font = pygame.font.SysFont(str(ableFonts[index]), 50, True, True)
+    text = font.render(text, True, (255,255,0))
+
+    textpos = text.get_rect()
+    textpos.center = (padWidth/2, padHeight/2)
+    gamePad.blit(text, textpos)
 
 # Han 전투기가 운석과 충돌했을 때 메세지 출력
 def crash(chracterNum):
@@ -263,8 +287,9 @@ def initGame():
 
 
 
+
 def runGame(gametypeNum, charterNum):
-    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg
+    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, ult_times
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play()
 
@@ -282,6 +307,7 @@ def runGame(gametypeNum, charterNum):
     # # Sae 무기좌표 리스트
     # missileXY = []
 
+
     #미사일, 음식들 세팅
     missiles = pygame.sprite.Group()
     foods = pygame.sprite.Group()
@@ -289,7 +315,7 @@ def runGame(gametypeNum, charterNum):
 
     # 점수
     score = 10
-
+    ult_times = 3
 
     # 음식 랜덤 생성 - Yu
     # rock = pygame.image.load(random.choice(rockImage))
@@ -333,6 +359,14 @@ def runGame(gametypeNum, charterNum):
                     missile = Missile(x + fighterWidth / 2, y - fighterHeight, 10)  # x의 정 가운데에서 미사일이 나간다
                     missile.launch()
                     missiles.add(missile)  # 미사일스 에 미사일 그룹을 추가
+                elif event.key == pygame.K_a:  # 궁극기 추가
+                    if ult_times > 0:
+                        for i in foods:
+                            if i.add_minus_score == -2:
+                                i.kill()
+                        ult_times -= 1
+                    else:
+                        pass
 
                     # missileX = x + fighterWidth / 2
                     # missileY = y - fighterHeight
@@ -390,13 +424,23 @@ def runGame(gametypeNum, charterNum):
             #                 missileXY.remove(bxy)  #Sae 미사일 제거
             #             except:
             #                 pass
+            if score < 20:  # 스피드 조절
+                speed = 2
+
+            elif score == 20:
+                speed = 4
+                writeMessage1("speed up!")
+
+            elif score == 40:
+                speed = 5
+                writeMessage1("speed up!")
+
 
 
 
             #음식 생성되고 랜덤으로 스피드 주는 곳
-            if random.randint(1, 50) == 1:
+            if random.randint(1, 100) == 1:
                 for i in range(2):
-                    speed = random.randint(1, 7)
                     food = Food(random.randint(0, padWidth - 30), 0, speed)
                     foods.add(food)
 
@@ -416,8 +460,12 @@ def runGame(gametypeNum, charterNum):
             if score <= 0:
                 gameOver(charterNum)
 
+            if score >= 50:  #50넘었을 때 게임 클리어
+                pass
+
             # 감량/증량 점수 표시
             writeScore(score)
+            writeUlt(ult_times)
 
             foods.update()
             foods.draw(gamePad)
