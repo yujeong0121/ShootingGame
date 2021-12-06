@@ -310,7 +310,7 @@ def gameclear():
 
         drawObject(clearimg,0,0)
 
-      
+
 
 
 
@@ -514,10 +514,12 @@ def runGame(gametypeNum, charterNum):
 
             # 감량/증량 값이 0이면 게임오버
             if score <= 0:
+                pygame.mixer.music.stop()
                 pygame.mixer.Sound.play(oversound)
                 gameover()
 
             if score >= 50:  #50넘었을 때 게임 클리어
+                pygame.mixer.music.stop()
                 pygame.mixer.Sound.play(clearsound)
                 gameclear()
 
