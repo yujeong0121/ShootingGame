@@ -118,24 +118,27 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type2):
         mouse2 = pygame.mouse.get_pos()
         click2 = pygame.mouse.get_pressed()
-
+        self.sound = pygame.mixer.Sound('click_sound.mp3')
         drawObject(img_in, x, y)
 
         if x + width > mouse2[0] > x and y + height > mouse2[1] > y:  # 마우스가 캐릭터 위에 있을 때
             drawObject(img_act, x_act, y_act)  # 선택효과 있는 이미지로 그려줌
             if click2[0] and type2 == 1:  # play 버튼 눌렀을 때
+                self.sound.play()
                 runGame(0,0)  # runGame 으로 들어가서 캐릭터 고르기
 
             elif click2[0] and type2 == 2:  # exit 버튼 눌렀을 때
+                self.sound.play()
                 pygame.quit()  # 나가기
                 sys.exit()
 
             elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
+                self.sound.play()
                 drawObject(helpimg, 0,0)
                 pygame.display.update()
 
             elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
-
+                self.sound.play()
                 drawObject(storyline, 0, 0)
                 pygame.display.update()
 
@@ -143,12 +146,13 @@ class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-
+        self.sound = pygame.mixer.Sound('click_sound.mp3')
         drawObject(img_in, x, y)
 
         if x + width > mouse[0] > x and y +height > mouse[1] > y: #마우스가 캐릭터 위에 있을 때
            drawObject(img_act, x_act, y_act) #선택효과 있는 이미지로 그려줌
            if click[0]: #클릭했을 시
+              self.sound.play()
               sleep(1)
               runGame(1, type) #캐릭터 선택시 캐릭선택여부와 선택한 캐릭 타입 전달해서 게임실행
 
@@ -225,7 +229,9 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, clearimg, overimg, ultSound
+    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, \
+        fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, \
+        clearimg, overimg, ultSound, clickSound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -265,6 +271,7 @@ def initGame():
     missileSound = pygame.mixer.Sound('throwing.mp3')
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
     ultSound = pygame.mixer.Sound('ult_sound.mp3')
+    clickSound = pygame.mixer.Sound('click_sound.mp3')
 
 
     introGame = True
