@@ -225,7 +225,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, clearimg, overimg
+    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, clearimg, overimg, ultSound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -264,6 +264,7 @@ def initGame():
     pygame.mixer.music.play(-1)
     missileSound = pygame.mixer.Sound('throwing.mp3')
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
+    ultSound = pygame.mixer.Sound('ult_sound.mp3')
 
 
     introGame = True
@@ -396,6 +397,7 @@ def runGame(gametypeNum, charterNum):
                     missiles.add(missile)  # 미사일스 에 미사일 그룹을 추가
                 elif event.key == pygame.K_a:  # 궁극기 추가
                     if ult_times > 0:
+                        ultSound.play()
                         for i in foods:
                             if i.add_minus_score == -2:
                                 i.kill()
