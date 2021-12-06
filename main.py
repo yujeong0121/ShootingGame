@@ -95,9 +95,11 @@ def crash(chracterNum):
     writeMessage('전투기 파괴!', 0, chracterNum)
 
 # Han 게임 오버 메세지 보이기
-def gameOver(chracterNum):
-    global gamePad
-    writeMessage('게임 오버!', 1, chracterNum)
+
+#def gameOver(chracterNum):
+#   global gamePad
+#   writeMessage('게임 오버!', 1, chracterNum)
+
 
 def choiceCharacter():
     global gamePad
@@ -231,7 +233,7 @@ def drawObject(obj, x, y):
 def initGame():
     global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, \
         fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, \
-        clearimg, overimg, ultSound, clickSound
+        clearimg, overimg, ultSound, clickSound, restart, clickrestart, oversound, clearsound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -261,10 +263,11 @@ def initGame():
     background = pygame.image.load('backgound2.png')  # Han
     introimage = pygame.image.load('pig.png')
     clock = pygame.time.Clock() # 시간 추척 추가 - Yu
-    replaybuttonimg = pygame.image.load('rere.jpg')
+    restart = pygame.image.load('restart.png')
+    clickrestart = pygame.image.load('clickrestart.png')
     exitbottonimg = pygame.image.load('exit2.jpg')
-    clearimg = pygame.image.load('clearimg.jpg')
-    overimg = pygame.image.load('overimg2.jpg')
+    clearimg = pygame.image.load('couple2.jpg')
+    overimg = pygame.image.load('over4.jpg')
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
@@ -272,6 +275,8 @@ def initGame():
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
     ultSound = pygame.mixer.Sound('ult_sound.mp3')
     clickSound = pygame.mixer.Sound('click_sound.mp3')
+    oversound = pygame.mixer.Sound('gameov.mp3')
+    clearsound = pygame.mixer.Sound('gamecl.mp3')
 
 
     introGame = True
@@ -305,10 +310,14 @@ def gameclear():
 
         drawObject(clearimg,0,0)
 
+      
 
 
-        replayButton = Button2(replaybuttonimg, 200, 400, 60, 60, replaybuttonimg, 200, 400, 1)
-        exitButton = Button2(exitbottonimg, 200, 440, 60, 60, exitbottonimg, 200, 440, 2)
+
+
+
+        replayButton = Button2(restart, 200, 400, 60, 60, clickrestart, 200, 400, 1)
+        exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
         pygame.display.update()
         clock.tick(15)
 
@@ -324,8 +333,11 @@ def gameover():
         drawObject(overimg , 0, 0)
 
 
-        replayButton = Button2(replaybuttonimg, 200, 400, 60, 60, replaybuttonimg, 200, 400, 1)
-        exitButton = Button2(exitbottonimg, 200, 440, 60, 60, exitbottonimg, 200, 440, 2)
+
+
+
+        replayButton = Button2(restart, 200, 400, 60, 60, clickrestart, 200, 400, 1)
+        exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
         pygame.display.update()
         clock.tick(15)
 
@@ -357,7 +369,7 @@ def runGame(gametypeNum, charterNum):
     # start_ticks = pygame.time.get_ticks()
 
     # 점수
-    score = 10
+    score = 1
     ult_times = 3
 
     # 음식 랜덤 생성 - Yu
@@ -502,9 +514,11 @@ def runGame(gametypeNum, charterNum):
 
             # 감량/증량 값이 0이면 게임오버
             if score <= 0:
+                pygame.mixer.Sound.play(oversound)
                 gameover()
 
             if score >= 50:  #50넘었을 때 게임 클리어
+                pygame.mixer.Sound.play(clearsound)
                 gameclear()
 
             # 감량/증량 점수 표시
