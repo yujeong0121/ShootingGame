@@ -267,7 +267,7 @@ def initGame():
     clickrestart = pygame.image.load('clickrestart.png')
     exitbottonimg = pygame.image.load('exit2.jpg')
     clearimg = pygame.image.load('couple2.jpg')
-    overimg = pygame.image.load('over4.jpg')
+    overimg = pygame.image.load('over5.jpg')
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
