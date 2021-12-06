@@ -20,24 +20,24 @@ def writeScore(count):
     # # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     # ableFonts = pygame.font.get_fonts()  # 폰트 리스트
     # index = ableFonts.index("휴먼아미체")
-    font = pygame.font.Font('NEXONFootballGothicB.ttf', 30)  # 폰트 설정
-    text = font.render('파괴한 운석 수:' + str(count), True, (255, 255, 255))
-    gamePad.blit(text, (10, 0))
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
+    text = font.render('증감 점수:' + str(count), True, (255, 20, 147))
+    gamePad.blit(text, (10, 9))
 
 
 # Sae 운석이 화면 아래로 통과한 개수
 def writePassed(count):
     global gamePad
     #font = pygame.font.Font("폰트", 20)
-    font = pygame.font.Font('NEXONFootballGothicB.ttf', 30)  # 폰트 설정
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
     text = font.render('놓친 운석:' + str(count), True, (255, 0, 0))
-    gamePad.blit(text, (360, 0))
+    gamePad.blit(text, (360, 9))
 
 def writeUlt(times):
     global gamePad
-    font = pygame.font.Font('NEXONFootballGothicB.ttf', 30)  # 폰트 설정
-    text = font.render('궁극기:' + str(times), True, (255, 0, 0))
-    gamePad.blit(text, (360, 0))
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
+    text = font.render('궁극기:' + str(times), True, (255, 69, 0))
+    gamePad.blit(text, (380, 9))
 
 
 
@@ -71,9 +71,7 @@ def writeMessage(text, textType, characterNum):
 def writeMessage1(text): #Chan 일시적으로 메세지 표현
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
-    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("휴먼아미체")
-    font = pygame.font.SysFont(str(ableFonts[index]), 50, True, True)
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 40)  # 폰트 설정
     text = font.render(text, True, (255,255,0))
 
     textpos = text.get_rect()
@@ -474,11 +472,11 @@ def runGame(gametypeNum, charterNum):
             if score < 20:  # 스피드 조절
                 speed = 2
 
-            elif score == 20:
+            elif score == 21:
                 speed = 4
                 writeMessage1("speed up!")
 
-            elif score == 40:
+            elif score == 41:
                 speed = 5
                 writeMessage1("speed up!")
 
