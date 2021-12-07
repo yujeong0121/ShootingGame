@@ -4,6 +4,8 @@ import pygame
 import sys
 import random
 from time import sleep
+import math
+import time
 
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
@@ -45,9 +47,8 @@ def writeUlt(times):
 def writeMessage(text, textType, characterNum):
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
-    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("휴먼아미체")
-    font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
+
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 40)  # 폰트 설정
     text = font.render(text, True, (255,0,0))
 
     if textType == 0 or textType == 1: #게임오버 / 충돌했을 때
@@ -90,14 +91,14 @@ def crash(chracterNum):
 #   writeMessage('게임 오버!', 1, chracterNum)
 
 
-def choiceCharacter():
+def choiceCharacter(text):
     global gamePad
-    writeMessage('', 2, 0)
+    writeMessage(text, 2, 0)
 
 
 
 def occur_explosion(surface, x, y):
-    explosion_image = pygame.image.load('explosion.png')
+    explosion_image = pygame.image.load('mouth.png')
     explosion_rect = explosion_image.get_rect()
     explosion_rect.x = x
     explosion_rect.y = y
@@ -106,6 +107,7 @@ def occur_explosion(surface, x, y):
 
 
 class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요.
+
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type2):
         mouse2 = pygame.mouse.get_pos()
         click2 = pygame.mouse.get_pressed()
@@ -135,6 +137,7 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
 
 class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
+        global total_time, start_ticks # 타이머 관련 변수
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         self.sound = pygame.mixer.Sound('click_sound.mp3')
@@ -143,6 +146,9 @@ class Button1:
         if x + width > mouse[0] > x and y +height > mouse[1] > y: #마우스가 캐릭터 위에 있을 때
            drawObject(img_act, x_act, y_act) #선택효과 있는 이미지로 그려줌
            if click[0]: #클릭했을 시
+              total_time = 120 #시간 초기화
+              start_ticks = pygame.time.get_ticks()#시간 초기화
+
               self.sound.play()
               sleep(1)
               runGame(1, type) #캐릭터 선택시 캐릭선택여부와 선택한 캐릭 타입 전달해서 게임실행
@@ -222,7 +228,7 @@ def drawObject(obj, x, y):
 def initGame():
     global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, \
         fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, \
-        clearimg, overimg, ultSound, clickSound, restart, clickrestart, oversound, clearsound
+        clearimg, overimg, ultSound, clickSound, restart, clickrestart, oversound, clearsound, start_ticks, total_time, timeOutImage, timeOutSound
     pygame.init()  # Han
     gamePad = pygame.display.set_mode((padWidth, padHeight)) #Han
 
@@ -257,16 +263,21 @@ def initGame():
     exitbottonimg = pygame.image.load('exit2.jpg')
     clearimg = pygame.image.load('couple2.jpg')
     overimg = pygame.image.load('over5.jpg')
+    timeOutImage = pygame.image.load('time_out.png')
 
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play(-1)
     missileSound = pygame.mixer.Sound('throwing.mp3')
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
+    timeOutSound = pygame.mixer.Sound('gameover.mp3')
     ultSound = pygame.mixer.Sound('ult_sound.mp3')
     clickSound = pygame.mixer.Sound('click_sound.mp3')
     oversound = pygame.mixer.Sound('gameov.mp3')
     clearsound = pygame.mixer.Sound('gamecl.mp3')
 
+    # 시간 정보
+    total_time = 10
+    start_ticks = pygame.time.get_ticks()
 
     introGame = True
     while introGame:
@@ -300,17 +311,13 @@ def gameclear():
         drawObject(clearimg,0,0)
 
 
-
-
-
-
-
         replayButton = Button2(restart, 200, 400, 60, 60, clickrestart, 200, 400, 1)
         exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
         pygame.display.update()
         clock.tick(15)
 
-def gameover():
+def gameover(type):
+
     over = True
 
     while over:
@@ -318,10 +325,10 @@ def gameover():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
-        drawObject(overimg , 0, 0)
-
-
+        if type == 0:
+            drawObject(overimg, 0, 0)
+        else:
+            drawObject(timeOutImage, 0, 0)
 
 
 
@@ -332,10 +339,30 @@ def gameover():
 
 
 
+def Timer():
+    global total_time, start_ticks, gamePad
+    # 경과 시간 계산
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
+
+    # 타이머
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
+    timer = font.render("timer: " + str(int(total_time - elapsed_time)), True, (255, 0, 0))
+    gamePad.blit(timer, (150, 10))
+
+    if total_time - elapsed_time <= 0:
+        print("타임아웃")
+        timeOutSound.play()
+        gameover(1)
+
+
+
+
 def runGame(gametypeNum, charterNum):
-    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, ult_times
+    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, ult_times, start_ticks, total_time
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play()
+
+
 
     # 전투기 크기
     fighterSize = fighter.get_rect().size
@@ -428,16 +455,20 @@ def runGame(gametypeNum, charterNum):
 
 
 
+
         if gametypeNum == 0: # 최초 캐릭터 선택
+
 
          drawObject(character_choice_bg, 0, 0)  # 배경화면 그리기 -Han
          fighter1Button = Button1(fighter, 100, 255, 60, 60, clickFighter, 97, 252, 1)
          fighter2Button = Button1(fighter2, 310, 230, 60, 60, clickFighter2, 307, 227, 2)
-         choiceCharacter() #캐릭터를 선택해주세요 글씨
+         choiceCharacter("") # 없애면 안움직여서 놔둠 ㅠ
 
 
         elif gametypeNum == 1: # 캐릭터 선택이 끝난 이후
 
+
+            #choiceCharacter(str(start_time))
             drawObject(background, 0, 0)  # 배경화면 그리기 -Han
 
             if charterNum == 1: #뚠뚠 캐릭터 선택
@@ -469,7 +500,9 @@ def runGame(gametypeNum, charterNum):
             #                 missileXY.remove(bxy)  #Sae 미사일 제거
             #             except:
             #                 pass
-            if score < 20:  # 스피드 조절
+
+
+            if score < 21:  # 스피드 조절
                 speed = 2
 
             elif score == 21:
@@ -505,7 +538,7 @@ def runGame(gametypeNum, charterNum):
             if score <= 0:
                 pygame.mixer.music.stop()
                 pygame.mixer.Sound.play(oversound)
-                gameover()
+                gameover(0)
 
             if score >= 50:  #50넘었을 때 게임 클리어
                 pygame.mixer.music.stop()
@@ -515,6 +548,7 @@ def runGame(gametypeNum, charterNum):
             # 감량/증량 점수 표시
             writeScore(score)
             writeUlt(ult_times)
+            Timer()
 
             foods.update()
             foods.draw(gamePad)
