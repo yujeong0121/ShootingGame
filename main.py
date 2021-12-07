@@ -123,13 +123,18 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
 
             elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
                 self.sound.play()
-                drawObject(helpimg, 0,0)
-                pygame.display.update()
+                gamehelp()
+
+            if click2[0] and type2 == 5: # back 버튼 눌렀을 때
+                self.sound.play()
+                pygame.init()
+                initGame()
+                gameintro()
 
             elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
                 self.sound.play()
-                drawObject(storyline, 0, 0)
-                pygame.display.update()
+                gamestory()
+
 
 class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
@@ -218,7 +223,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, \
+    global gamePad, clock,title, introimage,play, exit, help, story, back, clickPlay, clickExit, clickHelp, clickStory, clickBack,helpimg, storyline, background, fighter, \
         fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, \
         clearimg, overimg, ultSound, clickSound, restart, clickrestart, oversound, clearsound
     pygame.init()  # Han
@@ -231,11 +236,13 @@ def initGame():
     exit = pygame.image.load('exit.png')  # 나가기버튼
     help = pygame.image.load('help.png')  # 도움말버튼
     story = pygame.image.load('story.png')  # 스토리버튼
+    back = pygame.image.load('back.png')    # 뒤로가기 버튼
 
     clickPlay = pygame.image.load('clickplay.png')  # 클릭한플레이버튼
     clickExit = pygame.image.load('clickexit.png')  # 클릭한나가기버튼
     clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
     clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
+    clickBack = pygame.image.load('clickback.png')    #클릭한 뒤로가기버튼
 
     helpimg = pygame.image.load('helpimg.png')        # 조작법 이미지
     storyline = pygame.image.load('storyline.png')  # 스토리라인 이미지
@@ -265,7 +272,7 @@ def initGame():
     oversound = pygame.mixer.Sound('gameov.mp3')
     clearsound = pygame.mixer.Sound('gamecl.mp3')
 
-
+def gameintro():
     introGame = True
     while introGame:
         for event in pygame.event.get():
@@ -279,9 +286,40 @@ def initGame():
 
         playButton = Button2(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
         exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
-        helpButton = Button2(help, 200, 480, 60, 60, clickHelp,200,480, 3)
-        storyButton = Button2(story, 200, 520, 60,60, clickStory,200,520, 4)
+        helpButton = Button2(help, 200, 480, 60, 60, clickHelp, 200, 480, 3)
+        storyButton = Button2(story, 200, 520, 60, 60, clickStory, 200, 520, 4)
         pygame.display.update()
+        clock.tick(15)
+
+
+def gamestory():
+    story = True
+
+    while story:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(storyline,0,0)
+        backButton = Button2(back, 4, 4, 60, 60, clickBack, 4, 4, 5)
+        pygame.display.update()
+        clock.tick(15)
+
+def gamehelp():
+    ghelp = True
+
+    while ghelp:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(helpimg,0,0)
+        backButton = Button2(back, 4, 4, 60, 60, clickBack, 4, 4, 5)
+
+        pygame.display.update()
+        clock.tick(15)
 
 
 
@@ -599,6 +637,8 @@ def runGame(gametypeNum, charterNum):
 
     pygame.quit() # pygame 종료 - Yu
 
+
 initGame()
+gameintro()
 runGame(0, 0)
 
