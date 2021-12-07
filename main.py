@@ -48,7 +48,8 @@ def writeMessage(text, textType, characterNum):
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
 
-    font = pygame.font.Font('NEXONFootballGothicB.ttf', 40)  # 폰트 설정
+
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
     text = font.render(text, True, (255,0,0))
 
     if textType == 0 or textType == 1: #게임오버 / 충돌했을 때
@@ -127,13 +128,18 @@ class Button2:  # 첫 시작화면 버튼 구성으로 새로 만들어봤어요
 
             elif click2[0] and type2 == 3:  # help 버튼 눌렀을 때
                 self.sound.play()
-                drawObject(helpimg, 0,0)
-                pygame.display.update()
+                gamehelp()
+
+            if click2[0] and type2 == 5: # back 버튼 눌렀을 때
+                self.sound.play()
+                pygame.init()
+                initGame()
+                gameintro()
 
             elif click2[0] and type2 == 4:  # story 버튼 눌렀을 때
                 self.sound.play()
-                drawObject(storyline, 0, 0)
-                pygame.display.update()
+                gamestory()
+
 
 class Button1:
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, type):
@@ -146,7 +152,7 @@ class Button1:
         if x + width > mouse[0] > x and y +height > mouse[1] > y: #마우스가 캐릭터 위에 있을 때
            drawObject(img_act, x_act, y_act) #선택효과 있는 이미지로 그려줌
            if click[0]: #클릭했을 시
-              total_time = 120 #시간 초기화
+              total_time = 122 #시간 초기화
               start_ticks = pygame.time.get_ticks()#시간 초기화
 
               self.sound.play()
@@ -226,7 +232,7 @@ def drawObject(obj, x, y):
 
 
 def initGame():
-    global gamePad, clock,title, play, exit, help, story, clickPlay, clickExit, clickHelp, clickStory, helpimg, storyline, background, fighter, \
+    global gamePad, clock,title, introimage,play, exit, help, story, back, clickPlay, clickExit, clickHelp, clickStory, clickBack,helpimg, storyline, background, fighter, \
         fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, gameOverSound, character_choice_bg, replaybuttonimg, exitbottonimg, \
         clearimg, overimg, ultSound, clickSound, restart, clickrestart, oversound, clearsound, start_ticks, total_time, timeOutImage, timeOutSound
     pygame.init()  # Han
@@ -239,11 +245,13 @@ def initGame():
     exit = pygame.image.load('exit.png')  # 나가기버튼
     help = pygame.image.load('help.png')  # 도움말버튼
     story = pygame.image.load('story.png')  # 스토리버튼
+    back = pygame.image.load('back.png')    # 뒤로가기 버튼
 
     clickPlay = pygame.image.load('clickplay.png')  # 클릭한플레이버튼
     clickExit = pygame.image.load('clickexit.png')  # 클릭한나가기버튼
     clickHelp = pygame.image.load('clickhelp.png')  # 클릭한도움말버튼
     clickStory = pygame.image.load('clickstory.png')  # 클릭한스토리버튼
+    clickBack = pygame.image.load('clickback.png')    #클릭한 뒤로가기버튼
 
     helpimg = pygame.image.load('helpimg.png')        # 조작법 이미지
     storyline = pygame.image.load('storyline.png')  # 스토리라인 이미지
@@ -269,15 +277,17 @@ def initGame():
     pygame.mixer.music.play(-1)
     missileSound = pygame.mixer.Sound('throwing.mp3')
     gameOverSound = pygame.mixer.Sound('gameover.mp3')
-    timeOutSound = pygame.mixer.Sound('gameover.mp3')
+    timeOutSound = pygame.mixer.Sound('gameover.mp3') #타임 아웃 효과음
     ultSound = pygame.mixer.Sound('ult_sound.mp3')
     clickSound = pygame.mixer.Sound('click_sound.mp3')
     oversound = pygame.mixer.Sound('gameov.mp3')
     clearsound = pygame.mixer.Sound('gamecl.mp3')
 
-    # 시간 정보
-    total_time = 10
-    start_ticks = pygame.time.get_ticks()
+    total_time = 122 #제한시간
+    start_ticks = pygame.time.get_ticks() #시작시간
+
+
+def gameintro():
 
     introGame = True
     while introGame:
@@ -292,9 +302,40 @@ def initGame():
 
         playButton = Button2(play, 200, 400, 60, 60, clickPlay, 200, 400, 1)
         exitButton = Button2(exit, 200, 440, 60, 60, clickExit, 200, 440, 2)
-        helpButton = Button2(help, 200, 480, 60, 60, clickHelp,200,480, 3)
-        storyButton = Button2(story, 200, 520, 60,60, clickStory,200,520, 4)
+        helpButton = Button2(help, 200, 480, 60, 60, clickHelp, 200, 480, 3)
+        storyButton = Button2(story, 200, 520, 60, 60, clickStory, 200, 520, 4)
         pygame.display.update()
+        clock.tick(15)
+
+
+def gamestory():
+    story = True
+
+    while story:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(storyline,0,0)
+        backButton = Button2(back, 4, 4, 60, 60, clickBack, 4, 4, 5)
+        pygame.display.update()
+        clock.tick(15)
+
+def gamehelp():
+    ghelp = True
+
+    while ghelp:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        drawObject(helpimg,0,0)
+        backButton = Button2(back, 4, 4, 60, 60, clickBack, 4, 4, 5)
+
+        pygame.display.update()
+        clock.tick(15)
 
 
 
@@ -345,7 +386,7 @@ def Timer():
     elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
 
     # 타이머
-    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)
     timer = font.render("timer: " + str(int(total_time - elapsed_time)), True, (255, 0, 0))
     gamePad.blit(timer, (150, 10))
 
@@ -358,7 +399,8 @@ def Timer():
 
 
 def runGame(gametypeNum, charterNum):
-    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, ult_times, start_ticks, total_time
+    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, speed_before, ult_times, start_ticks, total_time
+
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play()
 
@@ -504,14 +546,21 @@ def runGame(gametypeNum, charterNum):
 
             if score < 21:  # 스피드 조절
                 speed = 2
+                speed_before = 0
 
             elif score == 21:
                 speed = 4
-                writeMessage1("speed up!")
+                writeMessage1("SPEED Lv2!")
+
+            elif score > 21 and score < 41:
+                speed = 4
 
             elif score == 41:
                 speed = 5
-                writeMessage1("speed up!")
+                writeMessage1("SPEED Lv3!")
+
+            elif score > 41:
+                speed = 5
 
 
 
@@ -628,6 +677,8 @@ def runGame(gametypeNum, charterNum):
 
     pygame.quit() # pygame 종료 - Yu
 
+
 initGame()
+gameintro()
 runGame(0, 0)
 
