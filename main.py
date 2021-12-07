@@ -333,7 +333,7 @@ def gameover():
 
 
 def runGame(gametypeNum, charterNum):
-    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, ult_times
+    global gamepad, clock, background, fighter, fighter2, clickFighter, clickFighter2, missile, explosion, missileSound, character_choice_bg, speed, speed_before, ult_times
     pygame.mixer.music.load('music.mp3')  # Chan 음악 재생
     pygame.mixer.music.play()
 
@@ -471,14 +471,21 @@ def runGame(gametypeNum, charterNum):
             #                 pass
             if score < 20:  # 스피드 조절
                 speed = 2
+                speed_before = 0
 
             elif score == 21:
                 speed = 4
-                writeMessage1("speed up!")
+                writeMessage1("SPEED Lv2!")
+
+            elif score > 21 and score < 41:
+                speed = 4
 
             elif score == 41:
                 speed = 5
-                writeMessage1("speed up!")
+                writeMessage1("SPEED Lv3!")
+
+            elif score > 41:
+                speed = 5
 
 
 
