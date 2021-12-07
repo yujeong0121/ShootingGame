@@ -45,9 +45,7 @@ def writeUlt(times):
 def writeMessage(text, textType, characterNum):
     global gamePad
     #textfont = pygame.font.Font('폰트', 80)
-    ableFonts = pygame.font.get_fonts()  # 폰트 리스트
-    index = ableFonts.index("휴먼아미체")
-    font = pygame.font.SysFont(str(ableFonts[index]), 30, True, True)
+    font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
     text = font.render(text, True, (255,0,0))
 
     if textType == 0 or textType == 1: #게임오버 / 충돌했을 때
