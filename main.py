@@ -4,8 +4,7 @@ import pygame
 import sys
 import random
 from time import sleep
-import math
-import time
+
 
 padWidth = 480 # 게임화면의 가로크기
 padHeight = 640 # 게임화면의 세로크기
@@ -17,8 +16,6 @@ choice = 0
 # Sae 운석을 맞춘 개수 계산
 def writeScore(count):
     global gamePad
-    #font = pygame.font.Font("폰트 경로인가?", 20)
-
     # # % 기존 코드가 안되서 다른 방법을 찾아봄. 시스템에서 쓸수있는 폰트리스트를 뽑아서 그중 가장 대중적인 것으로 지정
     # ableFonts = pygame.font.get_fonts()  # 폰트 리스트
     # index = ableFonts.index("휴먼아미체")
@@ -30,7 +27,6 @@ def writeScore(count):
 # Sae 운석이 화면 아래로 통과한 개수
 def writePassed(count):
     global gamePad
-    #font = pygame.font.Font("폰트", 20)
     font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
     text = font.render('놓친 운석:' + str(count), True, (255, 0, 0))
     gamePad.blit(text, (360, 9))
@@ -46,8 +42,6 @@ def writeUlt(times):
 # Han 게임 메세지 출력
 def writeMessage(text, textType, characterNum):
     global gamePad
-    #textfont = pygame.font.Font('폰트', 80)
-
 
     font = pygame.font.Font('NEXONFootballGothicB.ttf', 25)  # 폰트 설정
     text = font.render(text, True, (255,0,0))
@@ -72,7 +66,7 @@ def writeMessage(text, textType, characterNum):
 
 def writeMessage1(text): #Chan 일시적으로 메세지 표현
     global gamePad
-    #textfont = pygame.font.Font('폰트', 80)
+
     font = pygame.font.Font('NEXONFootballGothicB.ttf', 40)  # 폰트 설정
     text = font.render(text, True, (255,255,0))
 
@@ -85,11 +79,7 @@ def crash(chracterNum):
     global gamePad
     writeMessage('전투기 파괴!', 0, chracterNum)
 
-# Han 게임 오버 메세지 보이기
 
-#def gameOver(chracterNum):
-#   global gamePad
-#   writeMessage('게임 오버!', 1, chracterNum)
 
 
 def choiceCharacter(text):
@@ -417,31 +407,18 @@ def runGame(gametypeNum, charterNum):
     fighterX = 0
     fighterY = 0  # 플레이어 움직임 y값
 
-    # # Sae 무기좌표 리스트
-    # missileXY = []
 
 
     #미사일, 음식들 세팅
     missiles = pygame.sprite.Group()
     foods = pygame.sprite.Group()
-    # start_ticks = pygame.time.get_ticks()
+
 
     # 점수
     score = 1
     ult_times = 3
 
-    # 음식 랜덤 생성 - Yu
-    # rock = pygame.image.load(random.choice(rockImage))
-    # rockSize = rock.get_rect().size # 운석 실제 크기
-    # rockWidth = rockSize[0]
-    # rockHeight = rockSize[1]
-    # destroySound = pygame.mixer.Sound(random.choice(explsionSound))
 
-
-    # 운석 초기 위치 설정 - Yu
-    # rockX = random.randrange(0, padWidth - rockWidth)
-    # rockY = 0
-    # rockSpeed = 2
 
     # 전투기 미사일에 운석이 맞았을 경우 True
     #isShot = False
