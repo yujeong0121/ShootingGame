@@ -259,7 +259,7 @@ def initGame():
     restart = pygame.image.load('restart.png')
     clickrestart = pygame.image.load('clickrestart.png')
     exitbottonimg = pygame.image.load('exit2.jpg')
-    clearimg = pygame.image.load('couple2.jpg')
+    clearimg = pygame.image.load('newcouple.jpg')
     overimg = pygame.image.load('over5.jpg')
     timeOutImage = pygame.image.load('time_out.png')
 
