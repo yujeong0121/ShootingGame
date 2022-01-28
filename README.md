@@ -1,19 +1,14 @@
 # Pygame을 활용한 다이어트 슈팅 게임 만들
 
-Relations: https://www.notion.so/11-165fbecffc3b47cbb2f69d21dff10ae8
-Skills: Github, PyCharm, Python
-진행 기간: 2021/11/29 → 2021/12/09
-팀 구성: 박유정, 김호준, 김찬희,정새하, 정한슬
-
 ### 🔗 Link
 
 **Source**
 
-[GitHub - yujeong0121/ShootingGame](https://github.com/yujeong0121/ShootingGame)
+[소스와 데이터를 보시려면 여기를 클릭해주세요](https://github.com/yujeong0121/ShootingGame)
 
 **PPT**
 
-[](https://github.com/yujeong0121/ShootingGame/blob/main/%EC%82%BC%EC%82%BC%EC%98%A4%EC%98%A4_%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8%EA%B3%A0%20%EC%8A%88%ED%8C%85%EA%B2%8C%EC%9E%84.pdf)
+[발표자료를 보시려면 여기를 클릭해주세요](https://github.com/yujeong0121/ShootingGame/blob/main/%EC%82%BC%EC%82%BC%EC%98%A4%EC%98%A4_%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8%EA%B3%A0%20%EC%8A%88%ED%8C%85%EA%B2%8C%EC%9E%84.pdf)
 
 ## ✍️ 요약
 
@@ -29,7 +24,8 @@ Skills: Github, PyCharm, Python
 
 ## 📌 게임 소개
 
-![게임화면.PNG](Pygame%E1%84%8B%E1%85%B3%E1%86%AF%20%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%92%E1%85%A1%E1%86%AB%20%E1%84%83%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A5%E1%84%90%E1%85%B3%20%E1%84%89%E1%85%B2%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%202327da6e3cfe43bd8900bb900c1bcc2d/%EA%B2%8C%EC%9E%84%ED%99%94%EB%A9%B4.png)
+![게임화면](https://user-images.githubusercontent.com/94778140/151475560-1c8eaf00-e910-4b3a-8524-b216dd3d6ecf.PNG)
+
 
 - 주제
     
@@ -57,8 +53,8 @@ Skills: Github, PyCharm, Python
 
 - 플로우 차트
     
-    ![플로우 차트.PNG](Pygame%E1%84%8B%E1%85%B3%E1%86%AF%20%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%92%E1%85%A1%E1%86%AB%20%E1%84%83%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A5%E1%84%90%E1%85%B3%20%E1%84%89%E1%85%B2%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%202327da6e3cfe43bd8900bb900c1bcc2d/%ED%94%8C%EB%A1%9C%EC%9A%B0_%EC%B0%A8%ED%8A%B8.png)
-    
+![플로우 차트](https://user-images.githubusercontent.com/94778140/151475589-7cf27051-b20d-4862-9d59-33cd317567bc.PNG)
+
 
 ## 🛠 사용 라이브러리
 
